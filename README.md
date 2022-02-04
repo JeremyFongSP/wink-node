@@ -1,2 +1,2 @@
 # wink-node
-Wink SDK for Javascript
+Wink SDK for Node.js
