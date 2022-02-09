@@ -1,4 +1,4 @@
-import * as WinkQuery from "../../../lib/resources/GetMyUsers.js";
+import getMyUsers from "../../../lib/resources/GetMyUsers.js";
 import query from "../../../lib/utils/query.js";
 jest.mock("../../../lib/utils/query.js", () => jest.fn());
 jest.mock("../../../lib/resources/GraphQLStrings.js", () => jest.fn());
@@ -19,7 +19,7 @@ describe("QUERY getMyUsers()", () => {
 
       // Uses getMyUsers without using the client with the
       // jest.mocks above: Mocks the query and the gql strings
-      await WinkQuery.getMyUsers({ api: api }).then((response) => {
+      await getMyUsers({ api: api }).then((response) => {
         // toStrictEqual instead of toBe to compare the array
         // and not the content of the array
         expect(response).toStrictEqual([[Object], [Object]]);
@@ -31,7 +31,7 @@ describe("QUERY getMyUsers()", () => {
     it("should return a TypeError", async () => {
       // Call query, catch, throw and expect
       // (only way to make it work for some reason)
-      await WinkQuery.getMyUsers().catch((e) => {
+      await getMyUsers().catch((e) => {
         expect(() => {
           throw e;
         }).toThrow(TypeError);
@@ -55,7 +55,7 @@ describe("QUERY getMyUsers()", () => {
 
       // Call query, catch, throw and expect
       // (only way to make it work for some reason)
-      await WinkQuery.getMyUsers({ api: invalid_api }).catch((e) => {
+      await getMyUsers({ api: invalid_api }).catch((e) => {
         expect(() => {
           throw e;
         }).toThrowError("Is it the right API key? Did you create any users?");
@@ -79,7 +79,7 @@ describe("QUERY getMyUsers()", () => {
 
       // Call query, catch, throw and expect
       // (only way to make it work for some reason)
-      await WinkQuery.getMyUsers({ api: api }).catch((e) => {
+      await getMyUsers({ api: api }).catch((e) => {
         expect(() => {
           throw e;
         }).toThrowError("A Network error has occurred");
@@ -103,7 +103,7 @@ describe("QUERY getMyUsers()", () => {
 
       // Call query, catch, throw and expect
       // (only way to make it work for some reason)
-      await WinkQuery.getMyUsers({ api: api }).catch((e) => {
+      await getMyUsers({ api: api }).catch((e) => {
         expect(() => {
           throw e;
         }).toThrowError("A Client side error occurred");
@@ -127,7 +127,7 @@ describe("QUERY getMyUsers()", () => {
 
       // Call query, catch, throw and expect
       // (only way to make it work for some reason)
-      await WinkQuery.getMyUsers({ api: api }).catch((e) => {
+      await getMyUsers({ api: api }).catch((e) => {
         expect(() => {
           throw e;
         }).toThrowError("An Unknown error occurred while fetching users");
