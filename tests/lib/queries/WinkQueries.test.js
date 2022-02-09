@@ -110,4 +110,28 @@ describe("QUERY getMyUsers()", () => {
       });
     });
   });
+
+  describe("when a query is sent and an unknown error occurs", () => {
+    it("should return the unknow error message", async () => {
+      // Mock query implementation to return error
+      query.mockImplementationOnce(() =>
+        Promise.reject({
+          graphQLErrors: [],
+          networkError: [],
+          clientErrors: [],
+        })
+      );
+
+      // Requires an API string
+      var api = "";
+
+      // Call query, catch, throw and expect
+      // (only way to make it work for some reason)
+      await WinkQuery.getMyUsers({ api: api }).catch((e) => {
+        expect(() => {
+          throw e;
+        }).toThrowError("An Unknown error occurred while fetching users");
+      });
+    });
+  });
 });
