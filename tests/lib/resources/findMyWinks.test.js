@@ -1,4 +1,4 @@
-import getMyUsers from "../../../lib/resources/GetMyUsers.js";
+import findWinksSent from "../../../lib/resources/findWinksSent.js";
 import query from "../../../lib/utils/query.js";
 jest.mock("../../../lib/utils/query.js", () => jest.fn());
 jest.mock("../../../lib/resources/GraphQLStrings.js", () => jest.fn());
@@ -7,19 +7,21 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
-describe("QUERY getMyUsers()", () => {
+describe("QUERY findWinksSent()", () => {
+  // NO USERS WERE PROVIDED
+
   describe("when a query is successfully returned", () => {
-    it("should return a list of objects (users)", async () => {
+    it("should return a list of objects (winks)", async () => {
       // Mock query implementation to return list of objects
       query.mockImplementationOnce(() =>
-        Promise.resolve({ data: { fetchUsers: [[Object], [Object]] } })
+        Promise.resolve({ data: { findWinksSent: [[Object], [Object]] } })
       );
       // Requires an API string
       var api = "";
 
-      // Uses getMyUsers without using the client with the
+      // Uses findWinksSent without using the client with the
       // jest.mocks above: Mocks the query and the gql strings
-      await getMyUsers({ api: api }).then((response) => {
+      await findWinksSent({ api: api }).then((response) => {
         // toStrictEqual instead of toBe to compare the array
         // and not the content of the array
         expect(response).toStrictEqual([[Object], [Object]]);
@@ -31,7 +33,7 @@ describe("QUERY getMyUsers()", () => {
     it("should return a TypeError", async () => {
       // Call query, catch, throw and expect
       // (only way to make it work for some reason)
-      await getMyUsers().catch((e) => {
+      await findWinksSent().catch((e) => {
         expect(() => {
           throw e;
         }).toThrow(TypeError);
@@ -40,7 +42,7 @@ describe("QUERY getMyUsers()", () => {
   });
 
   describe("when a query is sent with an invalid API key", () => {
-    it("should return an error about bad API key or no users", async () => {
+    it("should return an error about bad API key or no winks", async () => {
       // Mock query implementation to return error
       query.mockImplementationOnce(() =>
         Promise.reject({
@@ -55,10 +57,10 @@ describe("QUERY getMyUsers()", () => {
 
       // Call query, catch, throw and expect
       // (only way to make it work for some reason)
-      await getMyUsers({ api: invalid_api }).catch((e) => {
+      await findWinksSent({ api: invalid_api }).catch((e) => {
         expect(() => {
           throw e;
-        }).toThrowError("Is it the right API key? Did you create any users?");
+        }).toThrowError("Is it the right API key? Did you create any winks?");
       });
     });
   });
@@ -79,7 +81,7 @@ describe("QUERY getMyUsers()", () => {
 
       // Call query, catch, throw and expect
       // (only way to make it work for some reason)
-      await getMyUsers({ api: api }).catch((e) => {
+      await findWinksSent({ api: api }).catch((e) => {
         expect(() => {
           throw e;
         }).toThrowError("A Network error has occurred");
@@ -103,7 +105,7 @@ describe("QUERY getMyUsers()", () => {
 
       // Call query, catch, throw and expect
       // (only way to make it work for some reason)
-      await getMyUsers({ api: api }).catch((e) => {
+      await findWinksSent({ api: api }).catch((e) => {
         expect(() => {
           throw e;
         }).toThrowError("A Client side error occurred");
@@ -127,10 +129,10 @@ describe("QUERY getMyUsers()", () => {
 
       // Call query, catch, throw and expect
       // (only way to make it work for some reason)
-      await getMyUsers({ api: api }).catch((e) => {
+      await findWinksSent({ api: api }).catch((e) => {
         expect(() => {
           throw e;
-        }).toThrowError("An Unknown error occurred while fetching users");
+        }).toThrowError("An Unknown error occurred while fetching winks");
       });
     });
   });
