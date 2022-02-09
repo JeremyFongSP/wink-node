@@ -1,7 +1,7 @@
-import * as WinkQuery from "../../../lib/queries/WinkQueries.js";
+import * as WinkQuery from "../../../lib/resources/GetMyUsers.js";
 import query from "../../../lib/utils/query.js";
 jest.mock("../../../lib/utils/query.js", () => jest.fn());
-jest.mock("../../../lib/queries/GraphQLStrings.js", () => jest.fn());
+jest.mock("../../../lib/resources/GraphQLStrings.js", () => jest.fn());
 
 beforeEach(() => {
   jest.clearAllMocks();
