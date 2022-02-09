@@ -46,7 +46,7 @@ describe("QUERY findWinksSent()", () => {
       // Mock query implementation to return error
       query.mockImplementationOnce(() =>
         Promise.reject({
-          graphQLErrors: [{ message: "Error Message" }],
+          graphQLErrors: [{ message: "GraphQL error message" }],
           networkError: [],
           clientErrors: [],
         })
@@ -60,7 +60,7 @@ describe("QUERY findWinksSent()", () => {
       await findWinksSent({ api: invalid_api }).catch((e) => {
         expect(() => {
           throw e;
-        }).toThrowError("Is it the right API key? Did you create any winks?");
+        }).toThrowError("GraphQL error message");
       });
     });
   });
@@ -71,7 +71,7 @@ describe("QUERY findWinksSent()", () => {
       query.mockImplementationOnce(() =>
         Promise.reject({
           graphQLErrors: [],
-          networkError: [{ message: "Error Message" }],
+          networkError: [{ message: "Network error message" }],
           clientErrors: [],
         })
       );
@@ -84,7 +84,7 @@ describe("QUERY findWinksSent()", () => {
       await findWinksSent({ api: api }).catch((e) => {
         expect(() => {
           throw e;
-        }).toThrowError("A Network error has occurred");
+        }).toThrowError("Network error message");
       });
     });
   });
@@ -96,7 +96,7 @@ describe("QUERY findWinksSent()", () => {
         Promise.reject({
           graphQLErrors: [],
           networkError: [],
-          clientErrors: [{ message: "Error Message" }],
+          clientErrors: [{ message: "Client error message" }],
         })
       );
 
@@ -108,7 +108,7 @@ describe("QUERY findWinksSent()", () => {
       await findWinksSent({ api: api }).catch((e) => {
         expect(() => {
           throw e;
-        }).toThrowError("A Client side error occurred");
+        }).toThrowError("Client error message");
       });
     });
   });
@@ -133,6 +133,68 @@ describe("QUERY findWinksSent()", () => {
         expect(() => {
           throw e;
         }).toThrowError("An Unknown error occurred while fetching winks");
+      });
+    });
+  });
+
+  // WHEN USER IS PROVIDED
+
+  describe("when a query is successfully returned with user id input", () => {
+    it("should return a list of objects (winks) from user", async () => {
+      // Mock query implementation to return list of objects
+      query.mockImplementationOnce(() =>
+        Promise.resolve({ data: { findWinksSent: [[Object], [Object]] } })
+      );
+      // Requires an API string
+      var api = "";
+      var user = { id: "4j4k1o9f02957k2l1k9f9rjr" };
+
+      // Uses findWinksSent without using the client with the
+      // jest.mocks above: Mocks the query and the gql strings
+      await findWinksSent({ api: api, user: user }).then((response) => {
+        // toStrictEqual instead of toBe to compare the array
+        // and not the content of the array
+        expect(response).toStrictEqual([[Object], [Object]]);
+      });
+    });
+  });
+
+  describe("when a query is successfully returned with username input", () => {
+    it("should return a list of objects (winks) from user", async () => {
+      // Mock query implementation to return list of objects
+      query.mockImplementationOnce(() =>
+        Promise.resolve({ data: { findWinksSent: [[Object], [Object]] } })
+      );
+      // Requires an API string
+      var api = "";
+      var user = { username: "MyUser" };
+
+      // Uses findWinksSent without using the client with the
+      // jest.mocks above: Mocks the query and the gql strings
+      await findWinksSent({ api: api, user: user }).then((response) => {
+        // toStrictEqual instead of toBe to compare the array
+        // and not the content of the array
+        expect(response).toStrictEqual([[Object], [Object]]);
+      });
+    });
+  });
+
+  describe("when a query is sent with a username that ", () => {
+    it("should return a list of objects (winks) from user", async () => {
+      // Mock query implementation to return list of objects
+      query.mockImplementationOnce(() =>
+        Promise.resolve({ data: { findWinksSent: [[Object], [Object]] } })
+      );
+      // Requires an API string
+      var api = "";
+      var user = "";
+
+      // Uses findWinksSent without using the client with the
+      // jest.mocks above: Mocks the query and the gql strings
+      await findWinksSent({ api: api, user: user }).then((response) => {
+        // toStrictEqual instead of toBe to compare the array
+        // and not the content of the array
+        expect(response).toStrictEqual([[Object], [Object]]);
       });
     });
   });

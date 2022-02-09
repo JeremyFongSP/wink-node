@@ -44,7 +44,7 @@ describe("QUERY getMyUsers()", () => {
       // Mock query implementation to return error
       query.mockImplementationOnce(() =>
         Promise.reject({
-          graphQLErrors: [{ message: "Error Message" }],
+          graphQLErrors: [{ message: "GraphQL error Message" }],
           networkError: [],
           clientErrors: [],
         })
@@ -58,7 +58,7 @@ describe("QUERY getMyUsers()", () => {
       await getMyUsers({ api: invalid_api }).catch((e) => {
         expect(() => {
           throw e;
-        }).toThrowError("Is it the right API key? Did you create any users?");
+        }).toThrowError("GraphQL error Message");
       });
     });
   });
@@ -69,7 +69,7 @@ describe("QUERY getMyUsers()", () => {
       query.mockImplementationOnce(() =>
         Promise.reject({
           graphQLErrors: [],
-          networkError: [{ message: "Error Message" }],
+          networkError: [{ message: "Network error message" }],
           clientErrors: [],
         })
       );
@@ -82,7 +82,7 @@ describe("QUERY getMyUsers()", () => {
       await getMyUsers({ api: api }).catch((e) => {
         expect(() => {
           throw e;
-        }).toThrowError("A Network error has occurred");
+        }).toThrowError("Network error message");
       });
     });
   });
@@ -94,7 +94,7 @@ describe("QUERY getMyUsers()", () => {
         Promise.reject({
           graphQLErrors: [],
           networkError: [],
-          clientErrors: [{ message: "Error Message" }],
+          clientErrors: [{ message: "Client error message" }],
         })
       );
 
@@ -106,7 +106,7 @@ describe("QUERY getMyUsers()", () => {
       await getMyUsers({ api: api }).catch((e) => {
         expect(() => {
           throw e;
-        }).toThrowError("A Client side error occurred");
+        }).toThrowError("Client error message");
       });
     });
   });
